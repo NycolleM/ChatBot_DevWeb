@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  @apply bg-gradient-to-b from-background via-background to-background min-h-screen bg-fixed m-0 flex justify-center items-center;
+}
