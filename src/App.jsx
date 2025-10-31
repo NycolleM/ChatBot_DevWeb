@@ -7,8 +7,8 @@ import TelaChat from './pages/TelaChat'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<TelaLogin />} />
-      <Route path="/telainicial" element={<TelaInicial />} />
+      <Route path="/" element={<TelaInicial />} />
+      <Route path="/telalogin" element={<TelaLogin />} />
       <Route path="/telachat" element={<TelaChat />} />
     </Routes>
   )
