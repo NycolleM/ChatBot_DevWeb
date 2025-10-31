@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import uniforlogo from '/imagens/uniforlogo.png';
+
 
 const TelaInicial = () => {
    
@@ -18,7 +18,7 @@ const TelaInicial = () => {
             <div class="md:inline-flex md:flex-row md:ml-auto">
               <a href='#inicio' class="mx-6 p-2"> Inicio </a>
               <a href='#sobrenaf'class="mx-6 p-2"> Sobre </a>
-              <a href='#'class="mx-6 p-2"> Entrar </a>
+              <a href="/telalogin" class="mx-6 p-2"> Entrar </a>
             </div>
           </div>
 
