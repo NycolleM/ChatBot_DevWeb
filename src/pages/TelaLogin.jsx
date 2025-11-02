@@ -8,7 +8,7 @@ const TelaLogin = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault()
-    navigate('/telainicial')
+    navigate('/telaacesso')
   }
 
   return (
@@ -70,7 +70,7 @@ const TelaLogin = () => {
           <p className="text-sm my-4">Não possui conta?</p>
           <button onClick={() => {
             setIsActive(true)
-            navigate('/telainicial') // Adiciona navegação ao clicar no botão
+            navigate('/telaacesso') // Adiciona navegação ao clicar no botão
           }}
             className="w-40 h-[46px] bg-green-600 border-2 border-white rounded-lg text-base hover:bg-blue-700">
             Fazer Cadastro
