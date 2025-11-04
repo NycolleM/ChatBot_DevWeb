@@ -5,18 +5,18 @@ import { BiArrowBack, BiEdit, BiLogOut } from 'react-icons/bi';
 import uniforlogo from '/src/imagens/uniforlogo.png';
 import iconchat from '/src/imagens/chatinho.png';
 import agenda from '/src/imagens/agenda.png';
-import luz from '/src/imagens/luz.png'; 
+import luz from '/src/imagens/luz.png';
 
 const TelaAcesso = () => {
-  
+
 
   return (
     <div className="h-screen w-full">
       <nav className="bg-[#e6e6e6ff] fixed top-0 shadow-md px-8 py-4 text-left relative padding-4">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-4 mx-32">
-            <a><img src={uniforlogo} alt="Logo NAF" class="h-12 w-12 drop-shadow-lg"/></a> 
-             <a className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.5)] text-[#004af7] text-2xl font-bold "> NAF </a>
+            <a><img src={uniforlogo} alt="Logo NAF" class="h-12 w-12 drop-shadow-lg" /></a>
+            <a className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.5)] text-[#004af7] text-2xl font-bold "> NAF </a>
           </div>
 
           <div class="w-full flex-grow md: inline-flex md:w-auto">
@@ -31,9 +31,9 @@ const TelaAcesso = () => {
       </nav>
 
       <div class="flex items-center bg-[#004af7] justify-center py-4 space-x-40 shadow-md">
-          <p class="text-white font-bold">Agendamento</p>
-          <a href="/telachat"><p class="text-white font-bold">Consulta com ChatBot</p></a>
-          <p class="text-white font-bold">Precificação</p>
+        <p class="text-white font-bold">Agendamento</p>
+        <a href="/telachat"><p class="text-white font-bold">Consulta com ChatBot</p></a>
+        <p class="text-white font-bold">Precificação</p>
       </div>
 
       <div class="text-center justify-center mt-12">
@@ -44,7 +44,7 @@ const TelaAcesso = () => {
 
         <div class="w-1/4 h-64 bg-gray-500/10 rounded-2xl shadow-md hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
           <div class="flex ">
-            <a><img src={agenda} alt="Logo NAF" class="h-13 w-16 drop-shadow-lg translate-x-3 translate-y-5"/></a>
+            <a><img src={agenda} alt="Logo NAF" class="h-13 w-16 drop-shadow-lg translate-x-3 translate-y-5" /></a>
             <a><p class="mx-9 mt-9 text-xl font-semibold text-gray-600">Agendamento Direto</p></a>
           </div>
           <div class="text-justify">
@@ -54,17 +54,17 @@ const TelaAcesso = () => {
 
         <div class="w-1/4 h-64 bg-gray-500/10 rounded-2xl shadow-md hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
           <div class="flex ">
-            <a><img src={iconchat} alt="Logo NAF" class="h-13 w-20 drop-shadow-lg translate-x-4 translate-y-2"/></a>
+            <a><img src={iconchat} alt="Logo NAF" class="h-13 w-20 drop-shadow-lg translate-x-4 translate-y-2" /></a>
             <a><p class="mx-14 mt-9 text-xl font-semibold text-gray-600">CHAT BOT</p></a>
           </div>
           <div class="text-justify">
             <p class="ml-4 mr-4 mt-4 text-gray-600">O Chat Bot do NAF é uma Inteligência Artificial capaz de responder perguntas relacionadas ao <span class="font-bold">Imposto de Renda</span>. Se possui alguma dúvida referente ao IRPF, clique na aba <span class="font-bold">"Consulta com ChatBot"</span> e inicie sua conversa!</p>
-          </div> 
+          </div>
         </div>
 
         <div class="w-1/4 h-64 bg-gray-500/10 rounded-2xl shadow-md hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
           <div class="flex ">
-            <a><img src={luz} alt="Logo NAF" class="h-13 w-20 drop-shadow-lg translate-x-4 translate-y-4"/></a>
+            <a><img src={luz} alt="Logo NAF" class="h-13 w-20 drop-shadow-lg translate-x-4 translate-y-4" /></a>
             <a><p class="mx-10 mt-7 text-xl font-semibold text-gray-600">Sugestão de Precificação</p></a>
           </div>
           <div class="text-justify">
@@ -74,13 +74,13 @@ const TelaAcesso = () => {
 
       </div>
 
-      
+
 
       <footer class="bg-[#004af7] text-white mt-96">
         <div class="max-w-5xl mx-auto px-2 py-8 md:flex md:items-center md:justify-between ">
-    
+
           {/* <div class="text-center md:text-left mb-4 md:mb-0"> */}
-            <p class="text-sm">NAF | Núcleo de Apoio Contábil e Fiscal </p>
+          <p class="text-sm">NAF | Núcleo de Apoio Contábil e Fiscal </p>
 
           {/* </div> */}
 
