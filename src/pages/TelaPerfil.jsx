@@ -26,16 +26,16 @@ export default function TelaPerfil() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background">
+    <div className="h-screen w-screen bg-background">
 
-      <nav className="bg-white shadow sticky top-0 z-50">
+      <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-4 mx-8">
-            <img src={uniforlogo} alt="Logo NAF" className="h-12 w-12 drop-shadow-lg"/>
-            <span className="text-primary text-2xl font-bold">NAF</span>
+          <div className="flex items-center space-x-4 mx-32">
+            <img src={uniforlogo} alt="Logo NAF" className="h-10 w-10 drop-shadow-lg"/>
+            <span className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.3)] text-primary text-xl font-bold">NAF</span>
           </div>
           <div className="hidden md:flex items-center text-sm">
-            <a href="/#inicio" className="mx-6 p-2">Início</a>
+            <a href="/telaacesso" className="mx-6 p-2">Início</a>
             <Link to="/telaperfiladmin" className="mx-6 p-2">Administrador</Link>
             <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
             <Link to="/telachat" className="mx-6 p-2">Chat</Link>
@@ -43,12 +43,12 @@ export default function TelaPerfil() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 py-10">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
-          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">
+          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fcfcfc] shadow hover:scale-[1.01] transition">
             <BiArrowBack/> Voltar
           </button>
-          <button onClick={()=>navigate('/login')} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">
+          <button onClick={()=>navigate('/telalogin')} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fcfcfc] shadow hover:scale-[1.01] transition">
             <BiLogOut/> Sair
           </button>
         </div>
@@ -57,7 +57,7 @@ export default function TelaPerfil() {
 
           {/* Perfil */}
 
-          <div className="md:col-span-1 bg-white rounded-2xl shadow p-6">
+          <div className="md:col-span-1 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <div className="flex flex-col items-center text-center">
               <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
                 {form.nome?.[0] || 'U'}
@@ -73,7 +73,7 @@ export default function TelaPerfil() {
 
           {/* Informações do perfil gnt*/}
 
-          <div className="md:col-span-2 bg-white rounded-2xl shadow p-6">
+          <div className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit/> Editar informações</h3>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               <label className="flex flex-col text-sm"> Nome <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/></label>
@@ -94,7 +94,7 @@ export default function TelaPerfil() {
                 <input className="rounded-xl border p-2" type="password" placeholder="Nova senha" value={senha.nova} onChange={e=>setSenha(s=>({...s,nova:e.target.value}))}/>
                 <input className="rounded-xl border p-2" type="password" placeholder="Confirmar nova senha" value={senha.confirmar} onChange={e=>setSenha(s=>({...s,confirmar:e.target.value}))}/>
               </div>
-              <button className="mt-3 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">Atualizar senha</button>
+              <button className="mt-3 px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:scale-[1.01] transition">Atualizar senha</button>
             </div>
           </div>
         </section>

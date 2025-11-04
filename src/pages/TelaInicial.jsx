@@ -8,7 +8,7 @@ const TelaInicial = () => {
   return (
     <div className="h-screen w-screen]">
 
-      <nav className="bg-[#e6e6e6ff] fixed top-0 shadow-md px-8 py-4 text-left relative padding-4">
+      <nav className="bg-[#e6e6e6ff] top-0 shadow-md px-8 py-3 text-left relative padding-4">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-4 mx-32">
             <a><img src={uniforlogo} alt="Logo NAF" class="h-12 w-12 drop-shadow-lg" /></a>
@@ -17,7 +17,6 @@ const TelaInicial = () => {
 
           <div class="w-full flex-grow md: inline-flex md:w-auto">
             <div class="md:inline-flex md:flex-row md:ml-auto">
-              <a href='#inicio' class="mx-6 p-2"> Inicio </a>
               <a href='#sobrenaf' class="mx-6 p-2"> Sobre </a>
               <a href="/telalogin" class="mx-6 p-2"> Entrar </a>
             </div>
@@ -34,7 +33,7 @@ const TelaInicial = () => {
       <div class="flex items-center text-justify justify-center py-8">
 
         <div class="w-2/3 h-48 bg-blue-500/15 rounded-2xl shadow-md justify-center text-center hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer">
-          <h1 class="mt-5 mb-5 text-2xl text-[#0d2385] font-bold">Melhor NAF do Nordeste pela Receita Federal</h1>
+          <h1 class="mt-5 mb-5 text-xl text-[#0d2385] font-bold">Melhor NAF do Nordeste pela Receita Federal</h1>
           <div class="text-justify">
             <p class="text-lg ml-5 mr-5">O Núcleo de Apoio Contábil e Fiscal (NAF) da Unifor é responsável por aprimorar o conhecimento
               e prestar assistência gratuita à população por meio da orientação sobre assuntos das áreas contábil e fiscal.
@@ -46,7 +45,7 @@ const TelaInicial = () => {
       </div>
 
       <div class="text-center justify-center py-10">
-        <a><h1 class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-3xl font-bold text-[#004af7]">Atendimento Integrado</h1></a>
+        <a><h1 class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-2xl font-bold text-[#004af7]">Atendimento Integrado</h1></a>
       </div>
 
       <div class="flex space-x-20 justify-center py-3">
@@ -86,7 +85,7 @@ const TelaInicial = () => {
 
 
       <div class="text-center justify-center py-16">
-        <a><h1 class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-3xl font-bold text-[#004af7]">Benefícios para a Comunidade</h1></a>
+        <a><h1 class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-2xl font-bold text-[#004af7]">Benefícios para a Comunidade</h1></a>
         <p class="mt-8 text-xl text-justify mx-96">O atendimento prestado pelo Núcleo beneficia a comunidade em geral, incluindo contribuintes, pessoas físicas, microempreendedores individuais (MEIs),
           entre outros. No NAF, os contribuintes têm acesso a serviços como:</p>
       </div>
@@ -120,7 +119,7 @@ const TelaInicial = () => {
       </div>
 
       <div class="text-center justify-center h-16 py-16">
-        <a><h1 id="sobrenaf" class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-3xl font-bold text-[#004af7]">Sobre o NAF</h1></a>
+        <a><h1 id="sobrenaf" class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-2xl font-bold text-[#004af7]">Sobre o NAF</h1></a>
       </div>
 
       <div class="flex items-center text-justify justify-center">

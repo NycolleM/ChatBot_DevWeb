@@ -12,7 +12,7 @@ const TelaAcesso = () => {
 
   return (
     <div className="h-screen w-full">
-      <nav className="bg-[#e6e6e6ff] fixed top-0 shadow-md px-8 py-4 text-left relative padding-4">
+      <nav className="bg-[#e6e6e6ff] fixed top-0 shadow-md px-8 py-3 text-left relative padding-4">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-4 mx-32">
             <a><img src={uniforlogo} alt="Logo NAF" class="h-12 w-12 drop-shadow-lg" /></a>
@@ -21,7 +21,7 @@ const TelaAcesso = () => {
 
           <div class="w-full flex-grow md: inline-flex md:w-auto">
             <div class="md:inline-flex md:flex-row md:ml-auto">
-              <a href='#inicio' class="mx-6 p-2"> Inicio </a>
+              <a href='/#inicio' class="mx-6 p-2"> Inicio </a>
               <a href="/telaperfil" class="mx-6 p-2"> Perfil </a>
               {/* <a href="/telaperfil" class="mx-6 p-2"> </a> */}
             </div>
@@ -37,7 +37,7 @@ const TelaAcesso = () => {
       </div>
 
       <div class="text-center justify-center mt-12">
-        <a><h1 id="servicos" class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-3xl font-bold text-[#004af7]">Conheça nossos Serviços abaixo!</h1></a>
+        <a><h1 id="servicos" class="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.9)] text-2xl font-bold text-[#004af7]">Conheça nossos Serviços abaixo!</h1></a>
       </div>
 
       <div class="flex justify-center mt-20 px-20 space-x-40">

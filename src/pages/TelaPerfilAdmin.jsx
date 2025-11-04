@@ -25,16 +25,16 @@ export default function TelaPerfilAdmin() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background">
+    <div className="h-screen w-screen">
 
-      <nav className="bg-white shadow sticky top-0 z-50">
+      <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-4 mx-8">
-            <img src={uniforlogo} alt="Logo NAF" className="h-12 w-12 drop-shadow-lg"/>
-            <span className="text-primary text-2xl font-bold">NAF</span>
+          <div className="flex items-center space-x-4 mx-32">
+            <img src={uniforlogo} alt="Logo NAF" className="h-10 w-10 drop-shadow-lg"/>
+            <span className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.3)] text-primary text-xl font-bold">NAF</span>
           </div>
           <div className="hidden md:flex items-center text-sm">
-            <a href="/#inicio" className="mx-6 p-2">Início</a>
+            <a href="/telaacesso" className="mx-6 p-2">Início</a>
             <Link to="/telaperfil" className="mx-6 p-2">Perfil (Usuário)</Link>
             <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
             <Link to="/telachat" className="mx-6 p-2">Chat</Link>
@@ -42,7 +42,7 @@ export default function TelaPerfilAdmin() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 py-10">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">
             <BiArrowBack/> Voltar

@@ -62,16 +62,16 @@ export default function TelaChat() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background">
+    <div className="h-screen w-screen bg-background">
 
-      <nav className="bg-white shadow sticky top-0 z-50">
+      <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-4 mx-8">
-            <img src={uniforlogo} alt="Logo NAF" className="h-12 w-12 drop-shadow-lg" />
-            <span className="text-primary text-2xl font-bold">NAF</span>
+          <div className="flex items-center space-x-4 mx-32">
+            <img src={uniforlogo} alt="Logo NAF" className="h-10 w-10 drop-shadow-lg" />
+            <span className="text-primary text-xl font-bold [text-shadow:_0_2px_4px_rgb(168_168_168_/_0.5)]">NAF</span>
           </div>
           <div className="hidden md:flex items-center text-sm">
-            <a href="/#inicio" className="mx-6 p-2">Início</a>
+            <a href="/telaacesso" className="mx-6 p-2">Início</a>
             <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
             <Link to="/telaperfil" className="mx-6 p-2">Perfil</Link>
           </div>
@@ -82,7 +82,7 @@ export default function TelaChat() {
 
         {/* Ideia que tive: Sugestões / FAQ */}
 
-        <aside className="bg-white rounded-2xl shadow p-4 h-fit md:sticky md:top-20">
+        <aside className="bg-[#fcfcfc] rounded-2xl shadow p-4 h-fit md:sticky md:top-20">
           <h2 className="text-[#0d2385] font-semibold mb-3">Dúvidas frequentes</h2>
           <div className="space-y-2">
             {FAQ.map((f, i) => (
@@ -94,13 +94,13 @@ export default function TelaChat() {
 
         {/* Chat */}
 
-        <section className="md:col-span-2 bg-white rounded-2xl shadow flex flex-col min-h-[70vh]">
+        <section className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow flex flex-col min-h-[70vh]">
           <div className="flex items-center justify-between p-3 border-b">
             <div className="font-semibold text-[#0d2385]">Assistente NAF</div>
             <div className="flex gap-2">
-              <button onClick={salvarSessao} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary text-white text-sm shadow"><BiBookmark /> Salvar</button>
-              <button onClick={limpar} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white text-sm shadow"><BiTrash /> Limpar</button>
-              <Link to="/telahistorico" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 text-sm shadow"><BiHistory /> Histórico</Link>
+              <button onClick={salvarSessao} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary hover:bg-[#003bc7] text-white text-sm shadow"><BiBookmark /> Salvar</button>
+              <button onClick={limpar} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white hover:bg-[#dcdcdc] text-sm shadow"><BiTrash /> Limpar</button>
+              <Link to="/telahistorico" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/15 text-sm shadow"><BiHistory /> Histórico</Link>
             </div>
           </div>
 
@@ -118,8 +118,9 @@ export default function TelaChat() {
 
           <form className="p-3 border-t flex gap-2" onSubmit={(e) => { e.preventDefault(); enviar(); }}>
             <input className="flex-1 rounded-xl border p-3" placeholder="Escreva sua dúvida..." value={msg} onChange={e => setMsg(e.target.value)} />
-            <button type="submit" className="rounded-xl px-4 py-2 bg-primary text-white shadow inline-flex items-center gap-2"><BiSend /> Enviar</button>
+            <button type="submit" className="rounded-xl px-4 py-2 bg-primary hover:bg-[#003bc7] text-white shadow inline-flex items-center gap-2"><BiSend /> Enviar</button>
           </form>
+
         </section>
       </main>
     </div>
