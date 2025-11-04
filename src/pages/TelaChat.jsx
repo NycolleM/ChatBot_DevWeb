@@ -1,31 +1,127 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { BiArrowBack, BiEdit, BiLogOut } from 'react-icons/bi';
-// import ModalInput from '../components/ModalInput'; 
 
-const TelaChat = () => {
-  
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { BiSend, BiBookmark, BiTrash, BiHistory } from 'react-icons/bi';
+import uniforlogo from '../imagens/uniforlogo.png';
+
+const FAQ = [
+  'Como emitir CPF pela primeira vez?',
+  'Como faço a declaração do Imposto de Renda?',
+  'Quem tem direito à isenção de MEI?',
+  'Como agendar atendimento no NAF?',
+  'Quais documentos levar para orientação fiscal?'
+];
+
+function respostaSimulada(pergunta) {
+
+  // AMIGS, olha que legal, é um simulador de respostas curtas com base em palavras-chave
+
+  const p = pergunta.toLowerCase();
+  if (p.includes('cpf')) return 'Para primeira via do CPF, leve documento oficial com foto e certidão de nascimento. No NAF, orientamos o passo a passo e o agendamento.';
+  if (p.includes('imposto') || p.includes('renda')) return 'A declaração do IR depende de sua renda e bens. No NAF, orientamos gratuitamente: traga informes de rendimento, comprovantes de despesas e documentos pessoais.';
+  if (p.includes('mei')) return 'MEI possui isenção de tributos federais (exceto INSS/ISS/ICMS conforme atividade). Podemos orientar a formalização e as obrigações mensais (DAS).';
+  if (p.includes('agend')) return 'O agendamento do NAF ocorre via portal da Unifor ou presencialmente no balcão do NAF. Horário: seg-sex, 8h-17h.';
+  if (p.includes('document')) return 'Documentos básicos: RG/CPF, comprovante de residência, e materiais relacionados à demanda (ex.: informes, notas, recibos).';
+  return 'Registro sua dúvida! Um(a) aluno(a) do NAF responderá com orientação conforme sua necessidade. Para casos específicos, recomendaremos atendimento presencial.';
+}
+
+function salvarHistorico(session) {
+  const all = JSON.parse(localStorage.getItem('naf_chat_historico') || '[]');
+  all.unshift(session);
+  localStorage.setItem('naf_chat_historico', JSON.stringify(all.slice(0, 100)));
+}
+
+export default function TelaChat() {
+  const [msg, setMsg] = useState('');
+  const [mensagens, setMensagens] = useState([]);
+  const endRef = useRef(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [mensagens]);
+
+  function enviar(texto) {
+    const pergunta = (texto ?? msg).trim();
+    if (!pergunta) return;
+    const nova = { role: 'user', text: pergunta, ts: Date.now() };
+    const resposta = { role: 'bot', text: respostaSimulada(pergunta), ts: Date.now() + 1 };
+    setMensagens(prev => [...prev, nova, resposta]);
+    setMsg('');
+  }
+
+  function salvarSessao() {
+    if (mensagens.length === 0) return;
+    const titulo = mensagens.find(m => m.role === 'user')?.text?.slice(0, 60) || 'Conversa NAF';
+    const session = { id: Date.now(), titulo, createdAt: new Date().toISOString(), mensagens };
+    salvarHistorico(session);
+    alert('Conversa salva no histórico!');
+  }
+
+  function limpar() {
+    setMensagens([]);
+  }
 
   return (
-    <div className="h-screen w-screen">
+    <div className="min-h-screen w-full bg-background">
 
-
-       <div class="flex items-center text-justify justify-center py-10">
-        <div class="h-[36rem] w-2/3 bg-[#ebebeb] shadow-md rounded-2xl shadow-md justify-center">
-          <nav className="bg-[#004af7] shadow-md px-8 py-2 flex relative padding-4">
-            
-            <div class="flex items-center justify-center h-10 w-10 bg-[#ebebeb] rounded-full shadow-lg text-[#004af7] font-bold">
-              I.A
-            </div>
-            <a className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.5)] text-[#ffffff] mt-2 mx-4 text-lg font-bold "> ChatBot - IRPF </a>
-
-          </nav>
-
+      <nav className="bg-white shadow sticky top-0 z-50">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center space-x-4 mx-8">
+            <img src={uniforlogo} alt="Logo NAF" className="h-12 w-12 drop-shadow-lg" />
+            <span className="text-primary text-2xl font-bold">NAF</span>
+          </div>
+          <div className="hidden md:flex items-center text-sm">
+            <a href="/#inicio" className="mx-6 p-2">Início</a>
+            <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
+            <Link to="/telaperfil" className="mx-6 p-2">Perfil</Link>
+          </div>
         </div>
-      </div>
+      </nav>
 
+      <main className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-3 gap-6">
+
+        {/* Ideia que tive: Sugestões / FAQ */}
+
+        <aside className="bg-white rounded-2xl shadow p-4 h-fit md:sticky md:top-20">
+          <h2 className="text-[#0d2385] font-semibold mb-3">Dúvidas frequentes</h2>
+          <div className="space-y-2">
+            {FAQ.map((f, i) => (
+              <button key={i} onClick={() => enviar(f)} className="w-full text-left rounded-xl px-3 py-2 bg-primary/10 hover:bg-primary/15 transition text-sm">{f}</button>
+            ))}
+          </div>
+          <div className="mt-4 text-xs text-gray-500">As respostas são simuladas para fins acadêmicos.</div>
+        </aside>
+
+        {/* Chat */}
+
+        <section className="md:col-span-2 bg-white rounded-2xl shadow flex flex-col min-h-[70vh]">
+          <div className="flex items-center justify-between p-3 border-b">
+            <div className="font-semibold text-[#0d2385]">Assistente NAF</div>
+            <div className="flex gap-2">
+              <button onClick={salvarSessao} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary text-white text-sm shadow"><BiBookmark /> Salvar</button>
+              <button onClick={limpar} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white text-sm shadow"><BiTrash /> Limpar</button>
+              <Link to="/telahistorico" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 text-sm shadow"><BiHistory /> Histórico</Link>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {mensagens.length === 0 && (
+              <div className="text-sm text-gray-500">Digite sua dúvida abaixo ou escolha uma pergunta frequente.</div>
+            )}
+            {mensagens.map((m, idx) => (
+              <div key={idx} className={`max-w-[80%] rounded-2xl px-4 py-2 shadow ${m.role === 'user' ? 'bg-primary text-white self-end ml-auto' : 'bg-gray-100 text-gray-800'}`}>
+                {m.text}
+              </div>
+            ))}
+            <div ref={endRef} />
+          </div>
+
+          <form className="p-3 border-t flex gap-2" onSubmit={(e) => { e.preventDefault(); enviar(); }}>
+            <input className="flex-1 rounded-xl border p-3" placeholder="Escreva sua dúvida..." value={msg} onChange={e => setMsg(e.target.value)} />
+            <button type="submit" className="rounded-xl px-4 py-2 bg-primary text-white shadow inline-flex items-center gap-2"><BiSend /> Enviar</button>
+          </form>
+        </section>
+      </main>
     </div>
   );
-};
-
-export default TelaChat;
+}

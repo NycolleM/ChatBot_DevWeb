@@ -5,6 +5,7 @@ import TelaLogin from './pages/TelaLogin'
 import TelaChat from './pages/TelaChat'
 import TelaAcesso from './pages/TelaAcesso'
 import TelaPerfil from './pages/TelaPerfil'
+import TelaPerfilAdmin from './pages/TelaPerfilAdmin'
 import TelaHistorico from './pages/TelaHistorico'
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
       <Route path="/telachat" element={<TelaChat />} />
       <Route path="/telaperfil" element={<TelaPerfil />} />
       <Route path="/telahistorico" element={<TelaHistorico />} />
+    
+      <Route path="/telaperfiladmin" element={<TelaPerfilAdmin />} />
     </Routes>
   )
 }
