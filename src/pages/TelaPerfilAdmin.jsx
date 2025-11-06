@@ -7,12 +7,12 @@ import uniforlogo from '../imagens/uniforlogo.png';
 export default function TelaPerfilAdmin() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    nome: 'Admin NAF',
-    email: 'admin@unifor.edu.br',
-    cargo: 'Administrador(a)',
-    telefone: '(85) 99999-9999',
-    horario: 'Seg a Sex, 8h às 17h',
-    local: 'Bloco X - Sala NAF',
+    // nome: 'Admin NAF',
+    // email: 'admin@unifor.edu.br',
+    // cargo: 'Administrador(a)',
+    // telefone: '(85) 99999-9999',
+    // horario: 'Seg a Sex, 8h às 17h',
+    // local: 'Bloco X - Sala NAF',
   });
 
   function handleChange(e) {
