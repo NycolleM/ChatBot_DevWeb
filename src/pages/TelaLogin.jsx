@@ -123,7 +123,7 @@ const TelaLogin = () => {
           <div className="relative my-8">
             <input 
               type="text" 
-              placeholder="Username" 
+              placeholder="Nome" 
               required
               className="w-full py-3 px-5 pr-[50px] bg-gray-100 rounded-lg border-none outline-none text-base text-gray-800 font-medium" 
               value={usernameCadastro}
@@ -165,9 +165,9 @@ const TelaLogin = () => {
       </div>
 
       <div className="absolute w-full h-full">
-        <div className={`absolute w-[300%] h-full bg-primary  rounded-[150px] z-20 transition-all duration-[1.8s] ease-in-out ${isActive ? 'left-[50%]' : 'left-[-250%]'}`} /> {/* togleleft) */}
+        <div className={`absolute w-[300%] h-full bg-primary rounded-[150px] z-20 transition-all duration-[1.8s] ease-in-out ${isActive ? 'left-[50%]' : 'left-[-250%]'}`} /> {/* togleleft) */}
 
-        <div className={`absolute w-1/2 h-full flex flex-col justify-center items-center text-white z-20 transition-all duration-[1s] ease-in-out  ${isActive ? "visible left-[50%]  invisible" : "left-[0%] "}`}>
+        <div className={`absolute w-1/2 h-full flex flex-col justify-center items-center text-white z-20 transition-all duration-[1s] ease-in-out ${isActive ? "visible left-[50%] invisible" : "left-[0%] "}`}>
           <h1 className="text-3xl font-semibold [text-shadow:_0_2px_4px_rgb(15_37_115_/_0.6)]">Olá, Seja Bem vindo!</h1>
           <p className="text-sm my-4">Não possui conta?</p>
           <button onClick={() => setIsActive(true)}
