@@ -17,7 +17,7 @@ const TelaInicial = () => {
 
           <div class="w-full flex-grow md: inline-flex md:w-auto">
             <div class="md:inline-flex md:flex-row md:ml-auto">
-              <a href='#sobrenaf' class="mx-6 p-2"> Sobre </a>
+              <a href='#sobrenaf' class="mx-6 p-2 "> Sobre </a>
               <a href="/telalogin" class="mx-6 p-2"> Entrar </a>
             </div>
           </div>

@@ -5,11 +5,11 @@ import { BiSend, BiBookmark, BiTrash, BiHistory } from 'react-icons/bi';
 import uniforlogo from '../imagens/uniforlogo.png';
 
 const FAQ = [
-  // 'Como emitir CPF pela primeira vez?',
-  // 'Como faço a declaração do Imposto de Renda?',
-  // 'Quem tem direito à isenção de MEI?',
-  // 'Como agendar atendimento no NAF?',
-  // 'Quais documentos levar para orientação fiscal?'
+  'Como emitir CPF pela primeira vez?',
+  'Como faço a declaração do Imposto de Renda?',
+  'Quem tem direito à isenção de MEI?',
+  'Como agendar atendimento no NAF?',
+  'Quais documentos levar para orientação fiscal?'
 ];
 
 function respostaSimulada(pergunta) {
