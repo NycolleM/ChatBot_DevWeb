@@ -21,7 +21,7 @@ export default function TelaPerfilAdmin() {
   }
 
   function handleLogout() {
-    navigate('/login');
+    navigate('/telaloginadmin');
   }
 
   return (
