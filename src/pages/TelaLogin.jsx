@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BiUser, BiLock, BiEnvelope } from 'react-icons/bi';
 import axios from 'axios';
+import React, { useState } from 'react'
+import { useNavigate,Link} from 'react-router-dom'
+import { BiUser, BiLock, BiEnvelope } from 'react-icons/bi'
+
 
 const TelaLogin = () => {
   const [isActive, setIsActive] = useState(false);
@@ -108,7 +109,7 @@ const TelaLogin = () => {
           )}
 
           <div className="pb-5 text-sm text-[#5e5e5e]">
-            <a href="#" className="hover:text-primary">Esqueceu a Senha?</a>
+             <Link to="/telaloginadmin" className="mx-6 p-2">Administrador</Link>
           </div>
           <button type="submit" className="w-full h-12 rounded-lg border-none shadow-md text-[#5e5e5e] bg-gray-100 hover:bg-gray-200 cursor-pointer">
             Login
