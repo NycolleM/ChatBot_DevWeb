@@ -7,7 +7,7 @@ import TelaAcesso from './pages/TelaAcesso'
 import TelaPerfil from './pages/TelaPerfil'
 import TelaPerfilAdmin from './pages/TelaPerfilAdmin'
 import TelaHistorico from './pages/TelaHistorico'
-
+import TelaLoginAdmin from './pages/TelaLoginAdmin'
 function App() {
   return (
     <Routes>
@@ -17,7 +17,7 @@ function App() {
       <Route path="/telachat" element={<TelaChat />} />
       <Route path="/telaperfil" element={<TelaPerfil />} />
       <Route path="/telahistorico" element={<TelaHistorico />} />
-    
+      <Route path="/telaloginadmin" element={<TelaLoginAdmin />} />
       <Route path="/telaperfiladmin" element={<TelaPerfilAdmin />} />
     </Routes>
   )
