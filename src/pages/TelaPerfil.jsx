@@ -1,33 +1,103 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BiArrowBack, BiLogOut, BiEdit } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import uniforlogo from '../imagens/uniforlogo.png';
+import axios from 'axios';
 
 export default function TelaPerfil() {
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
-    // nome: 'Maria Eduarda',
-    // email: 'maria.ricoy@edu.unifor.br',
-    // curso: 'Ciências Contábeis',
-    // periodo: '4º semestre',
-    // telefone: '(85) 90000-0000',
+    nome: '',
+    email: '',
+    curso: '',
+    periodo: '',
+    telefone: '',
   });
-  const [senha, setSenha] = useState({ atual:'', nova:'', confirmar:'' });
+  const [senha, setSenha] = useState({ atual: '', nova: '', confirmar: '' });
+  
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const info = localStorage.getItem('userInfo');
+    if (!info) {
+      navigate('/telalogin');
+      return;
+    }
+
+    const userData = JSON.parse(info);
+    setUserInfo(userData);
+
+    const fetchUsuario = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3000/api/usuarios/${userData._id}`);
+        setForm({
+          nome: data.nome,
+          email: data.email,
+          curso: data.curso || '',
+          periodo: data.periodo || '',
+          telefone: data.telefone || '',
+        });
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+        alert("Erro ao buscar dados do usuário. Tente novamente.");
+      }
+    };
+
+    fetchUsuario();
+  }, [navigate]);
 
   function handleChange(e) {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   }
 
-  function salvar() {
-    localStorage.setItem('perfil_usuario', JSON.stringify(form));
-    alert('Perfil atualizado!');
-  }
+  const handleSair = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/telalogin');
+  };
+
+  const handleSalvar = async () => {
+    if (!userInfo) return;
+
+    try {
+      const { data } = await axios.put(`http://localhost:3000/api/usuarios/${userInfo._id}`, form);
+      
+      setForm(data);
+      alert('Perfil atualizado com sucesso!');
+    } catch (error) {
+      const msg = error.response?.data?.msg || "Erro ao salvar perfil";
+      console.error(msg);
+      alert(`Erro: ${msg}`);
+    }
+  };
+
+  const handleAtualizarSenha = async () => {
+    if (!userInfo) return;
+
+    if (senha.nova !== senha.confirmar) {
+      alert("Nova senha e confirmação não batem.");
+      return;
+    }
+
+    try {
+      const { data } = await axios.put(`http://localhost:3000/api/usuarios/alterar-senha/${userInfo._id}`, {
+        senhaAtual: senha.atual,
+        novaSenha: senha.nova,
+        confirmarNovaSenha: senha.confirmar
+      });
+      
+      alert(data.msg);
+      setSenha({ atual: '', nova: '', confirmar: '' });
+    } catch (error) {
+      const msg = error.response?.data?.msg || "Erro ao atualizar senha";
+      console.error(msg);
+      alert(`Erro: ${msg}`);
+    }
+  };
 
   return (
     <div className="h-screen w-screen bg-background">
-
       <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-4 mx-32">
@@ -48,19 +118,16 @@ export default function TelaPerfil() {
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fcfcfc] shadow hover:scale-[1.01] transition">
             <BiArrowBack/> Voltar
           </button>
-          <button onClick={()=>navigate('/telalogin')} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fcfcfc] shadow hover:scale-[1.01] transition">
+          <button onClick={handleSair} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#fcfcfc] shadow hover:scale-[1.01] transition">
             <BiLogOut/> Sair
           </button>
         </div>
 
         <section className="grid md:grid-cols-3 gap-6">
-
-          {/* Perfil */}
-
           <div className="md:col-span-1 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <div className="flex flex-col items-center text-center">
               <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
-                {form.nome?.[0] || 'U'}
+                {form.nome?.[0]?.toUpperCase() || 'U'}
               </div>
               <h2 className="mt-4 text-xl font-semibold text-[#0d2385]">{form.nome}</h2>
               <p className="text-sm text-gray-600">{form.curso} • {form.periodo}</p>
@@ -70,8 +137,6 @@ export default function TelaPerfil() {
               <div><span className="font-medium">Telefone: </span>{form.telefone}</div>
             </div>
           </div>
-
-          {/* Informações do perfil gnt*/}
 
           <div className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit/> Editar informações</h3>
@@ -83,7 +148,7 @@ export default function TelaPerfil() {
               <label className="flex flex-col text-sm md:col-span-2"> Telefone <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/></label>
             </div>
             <div className="mt-4 flex gap-3">
-              <button onClick={salvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">Salvar</button>
+              <button onClick={handleSalvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">Salvar</button>
               <Link to="/telahistorico" className="px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:bg-primary/15 transition">Ver histórico</Link>
             </div>
 
@@ -94,7 +159,7 @@ export default function TelaPerfil() {
                 <input className="rounded-xl border p-2" type="password" placeholder="Nova senha" value={senha.nova} onChange={e=>setSenha(s=>({...s,nova:e.target.value}))}/>
                 <input className="rounded-xl border p-2" type="password" placeholder="Confirmar nova senha" value={senha.confirmar} onChange={e=>setSenha(s=>({...s,confirmar:e.target.value}))}/>
               </div>
-              <button className="mt-3 px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:scale-[1.01] transition">Atualizar senha</button>
+              <button onClick={handleAtualizarSenha} className="mt-3 px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:scale-[1.01] transition">Atualizar senha</button>
             </div>
           </div>
         </section>
