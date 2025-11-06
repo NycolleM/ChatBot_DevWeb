@@ -36,7 +36,7 @@ export default function TelaPerfil() {
           </div>
           <div className="hidden md:flex items-center text-sm">
             <a href="/telaacesso" className="mx-6 p-2">Início</a>
-            <Link to="/telaloginadmin" className="mx-6 p-2">Administrador</Link>
+           
             <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
             <Link to="/telachat" className="mx-6 p-2">Chat</Link>
           </div>
