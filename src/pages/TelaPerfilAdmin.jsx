@@ -41,7 +41,6 @@ export default function TelaPerfilAdmin() {
         });
       } catch (error) {
         console.error("Erro ao buscar dados do admin:", error);
-        alert("Erro ao buscar dados do admin. Tente novamente.");
       }
     };
 
@@ -81,7 +80,6 @@ export default function TelaPerfilAdmin() {
         horario: data.horarioAtendimento,
       });
 
-      alert('Configurações do NAF atualizadas com sucesso!');
     } catch (error) {
       const msg = error.response?.data?.msg || "Erro ao salvar configurações";
       console.error(msg);

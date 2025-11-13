@@ -61,7 +61,7 @@ const TelaLogin = () => {
       });
 
       console.log('Cadastro bem-sucedido:', data);
-      alert('Cadastro realizado com sucesso! Por favor, faça o login.');
+
 
       setUsernameCadastro('');
       setEmailCadastro('');
@@ -103,7 +103,6 @@ const TelaLogin = () => {
             />
             <BiLock className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
           </div>
-
           {erroLogin && (
             <p className="text-red-500 text-sm mb-4">{erroLogin}</p>
           )}
@@ -111,9 +110,16 @@ const TelaLogin = () => {
           <div className="pb-5 text-sm text-[#5e5e5e]">
              <Link to="/telaloginadmin" className="mx-6 p-2">Administrador</Link>
           </div>
+
           <button type="submit" className="w-full h-12 rounded-lg border-none shadow-md text-[#5e5e5e] bg-gray-100 hover:bg-gray-200 cursor-pointer">
             Login
           </button>
+
+           <div className="text-[#5e5e5e] mt-4">
+          <Link to="/recuperar-senha" className="text-blue-600 hover:underline">
+            Esqueceu a senha?
+          </Link>
+          </div>
         </form>
       </div>
 

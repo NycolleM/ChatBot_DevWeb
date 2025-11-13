@@ -3,6 +3,7 @@ import { BiArrowBack, BiLogOut, BiEdit } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import uniforlogo from '../imagens/uniforlogo.png';
 import axios from 'axios';
+import InputMask from 'react-input-mask';
 
 export default function TelaPerfil() {
   const navigate = useNavigate();
@@ -10,8 +11,8 @@ export default function TelaPerfil() {
   const [form, setForm] = useState({
     nome: '',
     email: '',
-    curso: '',
-    periodo: '',
+    bairro: '',
+    cnpj: '',
     telefone: '',
   });
   const [senha, setSenha] = useState({ atual: '', nova: '', confirmar: '' });
@@ -34,13 +35,12 @@ export default function TelaPerfil() {
         setForm({
           nome: data.nome,
           email: data.email,
-          curso: data.curso || '',
-          periodo: data.periodo || '',
+          bairro: data.bairro || '',
+          cnpj: data.cnpj || data.cpf || '',
           telefone: data.telefone || '',
         });
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
-        alert("Erro ao buscar dados do usuário. Tente novamente.");
       }
     };
 
@@ -63,8 +63,13 @@ export default function TelaPerfil() {
     try {
       const { data } = await axios.put(`http://localhost:3000/api/usuarios/${userInfo._id}`, form);
       
-      setForm(data);
-      alert('Perfil atualizado com sucesso!');
+      setForm({
+        nome: data.nome,
+        email: data.email,
+        bairro: data.bairro || '',
+        cnpj: data.cnpj || data.cpf || '',
+        telefone: data.telefone || '',
+      });
     } catch (error) {
       const msg = error.response?.data?.msg || "Erro ao salvar perfil";
       console.error(msg);
@@ -76,7 +81,6 @@ export default function TelaPerfil() {
     if (!userInfo) return;
 
     if (senha.nova !== senha.confirmar) {
-      alert("Nova senha e confirmação não batem.");
       return;
     }
 
@@ -96,6 +100,11 @@ export default function TelaPerfil() {
     }
   };
 
+  const docLimpo = (form.cnpj || '').replace(/[^\d]/g, '');
+  const mask = docLimpo.length > 11 
+    ? '99.999.999/9999-99'
+    : '999.999.999-99';
+
   return (
     <div className="h-screen w-screen bg-background">
       <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
@@ -105,9 +114,7 @@ export default function TelaPerfil() {
             <span className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.3)] text-primary text-xl font-bold">NAF</span>
           </div>
           <div className="hidden md:flex items-center text-sm">
-            <a href="/telaacesso" className="mx-6 p-2">Início</a>
-           
-            <Link to="/telahistorico" className="mx-6 p-2">Histórico</Link>
+            <a href="/telaacesso" className=" p-2">Início</a>
             <Link to="/telachat" className="mx-6 p-2">Chat</Link>
           </div>
         </div>
@@ -130,7 +137,7 @@ export default function TelaPerfil() {
                 {form.nome?.[0]?.toUpperCase() || 'U'}
               </div>
               <h2 className="mt-4 text-xl font-semibold text-[#0d2385]">{form.nome}</h2>
-              <p className="text-sm text-gray-600">{form.curso} • {form.periodo}</p>
+              <p className="text-sm text-gray-600">{form.bairro} • {form.cnpj}</p>
             </div>
             <div className="mt-6 space-y-3 text-sm">
               <div><span className="font-medium">E-mail: </span>{form.email}</div>
@@ -143,8 +150,17 @@ export default function TelaPerfil() {
             <div className="grid md:grid-cols-2 gap-4 mt-4">
               <label className="flex flex-col text-sm"> Nome <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/></label>
               <label className="flex flex-col text-sm"> E-mail <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Curso <input className="mt-1 rounded-xl border p-2" name="curso" value={form.curso} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Período <input className="mt-1 rounded-xl border p-2" name="periodo" value={form.periodo} onChange={handleChange}/></label>
+              <label className="flex flex-col text-sm"> Bairro <input className="mt-1 rounded-xl border p-2" name="bairro" value={form.bairro} onChange={handleChange}/></label>
+             <label className="flex flex-col text-sm"> CNPJ/CPF 
+                <InputMask 
+                  className="mt-1 rounded-xl border p-2"
+                  name="cnpj"
+                  value={form.cnpj} 
+                  onChange={handleChange}
+                  mask={mask}
+                  maskChar={null}
+                />
+              </label>
               <label className="flex flex-col text-sm md:col-span-2"> Telefone <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/></label>
             </div>
             <div className="mt-4 flex gap-3">

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BiSend, BiBookmark, BiTrash, BiHistory } from 'react-icons/bi';
@@ -13,9 +12,6 @@ const FAQ = [
 ];
 
 function respostaSimulada(pergunta) {
-
-  // AMIGS, olha que legal, é um simulador de respostas curtas com base em palavras-chave
-
   const p = pergunta.toLowerCase();
   if (p.includes('cpf')) return 'Para primeira via do CPF, leve documento oficial com foto e certidão de nascimento. No NAF, orientamos o passo a passo e o agendamento.';
   if (p.includes('imposto') || p.includes('renda')) return 'A declaração do IR depende de sua renda e bens. No NAF, orientamos gratuitamente: traga informes de rendimento, comprovantes de despesas e documentos pessoais.';
@@ -24,18 +20,54 @@ function respostaSimulada(pergunta) {
   if (p.includes('document')) return 'Documentos básicos: RG/CPF, comprovante de residência, e materiais relacionados à demanda (ex.: informes, notas, recibos).';
   return 'Registro sua dúvida! Um(a) aluno(a) do NAF responderá com orientação conforme sua necessidade. Para casos específicos, recomendaremos atendimento presencial.';
 }
-
-function salvarHistorico(session) {
+function salvarOuAtualizarHistorico(session) {
   const all = JSON.parse(localStorage.getItem('naf_chat_historico') || '[]');
-  all.unshift(session);
+  const existingIndex = all.findIndex(item => item.id === session.id);
+
+  if (existingIndex > -1) {
+    all[existingIndex] = session;
+  } else {
+    all.unshift(session);
+  }
+  
   localStorage.setItem('naf_chat_historico', JSON.stringify(all.slice(0, 100)));
 }
 
 export default function TelaChat() {
   const [msg, setMsg] = useState('');
   const [mensagens, setMensagens] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const endRef = useRef(null);
 
+  useEffect(() => {
+    const info = localStorage.getItem('userInfo');
+    if (info) {
+      setUserInfo(JSON.parse(info));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mensagens.length === 0) {
+      return;
+    }
+    const currentSessionId = sessionId ?? Date.now();
+    if (!sessionId) {
+      setSessionId(currentSessionId);
+    }
+    const titulo = mensagens.find(m => m.role === 'user')?.text?.slice(0, 60) || 'Conversa NAF';
+    const session = { 
+      id: currentSessionId, 
+      titulo, 
+      createdAt: new Date().toISOString(), 
+      mensagens,
+      usuarioNome: userInfo ? userInfo.nome : 'Usuário'
+    };
+    salvarOuAtualizarHistorico(session);
+
+  }, 
+
+  [mensagens, userInfo]);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensagens]);
@@ -48,17 +80,9 @@ export default function TelaChat() {
     setMensagens(prev => [...prev, nova, resposta]);
     setMsg('');
   }
-
-  function salvarSessao() {
-    if (mensagens.length === 0) return;
-    const titulo = mensagens.find(m => m.role === 'user')?.text?.slice(0, 60) || 'Conversa NAF';
-    const session = { id: Date.now(), titulo, createdAt: new Date().toISOString(), mensagens };
-    salvarHistorico(session);
-    alert('Conversa salva no histórico!');
-  }
-
   function limpar() {
     setMensagens([]);
+    setSessionId(null);
   }
 
   return (
@@ -80,8 +104,6 @@ export default function TelaChat() {
 
       <main className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-3 gap-6">
 
-        {/* Ideia que tive: Sugestões / FAQ */}
-
         <aside className="bg-[#fcfcfc] rounded-2xl shadow p-4 h-fit md:sticky md:top-20">
           <h2 className="text-[#0d2385] font-semibold mb-3">Dúvidas frequentes</h2>
           <div className="space-y-2">
@@ -92,13 +114,10 @@ export default function TelaChat() {
           <div className="mt-4 text-xs text-gray-500">As respostas são simuladas para fins acadêmicos.</div>
         </aside>
 
-        {/* Chat */}
-
         <section className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow flex flex-col min-h-[70vh]">
           <div className="flex items-center justify-between p-3 border-b">
             <div className="font-semibold text-[#0d2385]">Assistente NAF</div>
             <div className="flex gap-2">
-              <button onClick={salvarSessao} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary hover:bg-[#003bc7] text-white text-sm shadow"><BiBookmark /> Salvar</button>
               <button onClick={limpar} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white hover:bg-[#dcdcdc] text-sm shadow"><BiTrash /> Limpar</button>
               <Link to="/telahistorico" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/15 text-sm shadow"><BiHistory /> Histórico</Link>
             </div>

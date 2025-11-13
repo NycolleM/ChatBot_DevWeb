@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BiUser, BiLock, BiEnvelope, BiArrowBack } from 'react-icons/bi';
 import axios from 'axios';
 
@@ -68,6 +68,12 @@ const TelaLoginAdmin = () => {
           <button type="submit" className="w-full h-12 rounded-lg border-none shadow-md text-[#5e5e5e] bg-gray-100 hover:bg-gray-200 cursor-pointer">
             Login
           </button>
+
+          <div className="text-[#5e5e5e] mt-4">
+                    <Link to="/recuperar-senha" className="text-blue-600 hover:underline">
+                      Esqueceu a senha?
+                    </Link>
+                    </div>
         </form>
       </div>
 

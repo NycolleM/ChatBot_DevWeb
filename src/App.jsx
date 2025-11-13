@@ -8,6 +8,7 @@ import TelaPerfil from './pages/TelaPerfil'
 import TelaPerfilAdmin from './pages/TelaPerfilAdmin'
 import TelaHistorico from './pages/TelaHistorico'
 import TelaLoginAdmin from './pages/TelaLoginAdmin'
+import TelaRecuperarSenha from './pages/TelaRecuperarSenha';
 function App() {
   return (
     <Routes>
@@ -19,6 +20,7 @@ function App() {
       <Route path="/telahistorico" element={<TelaHistorico />} />
       <Route path="/telaloginadmin" element={<TelaLoginAdmin />} />
       <Route path="/telaperfiladmin" element={<TelaPerfilAdmin />} />
+      <Route path="/recuperar-senha" element={<TelaRecuperarSenha />} />
     </Routes>
   )
 }
