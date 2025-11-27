@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export default function TelaPerfilAdmin() {
   const navigate = useNavigate();
-  
+
   const [form, setForm] = useState({
     nome: '',
     email: '',
@@ -15,8 +15,11 @@ export default function TelaPerfilAdmin() {
     horario: '',
     local: '',
   });
-  
+
   const [adminInfo, setAdminInfo] = useState(null);
+
+  // 👇 NOVO: estado para foto de perfil do admin
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     const info = localStorage.getItem('adminInfo');
@@ -39,6 +42,13 @@ export default function TelaPerfilAdmin() {
           local: data.local || '',
           horario: data.horarioAtendimento || '',
         });
+
+        // 👇 NOVO: carregar avatar salvo do localStorage
+        const avatarKey = `avatar_admin_${adminData._id}`;
+        const savedAvatar = localStorage.getItem(avatarKey);
+        if (savedAvatar) {
+          setAvatar(savedAvatar);
+        }
       } catch (error) {
         console.error("Erro ao buscar dados do admin:", error);
       }
@@ -70,7 +80,7 @@ export default function TelaPerfilAdmin() {
 
     try {
       const { data } = await axios.put(`http://localhost:3000/api/admin/${adminInfo._id}`, dadosParaSalvar);
-      
+
       setForm({
         nome: data.nome,
         email: data.email,
@@ -87,12 +97,33 @@ export default function TelaPerfilAdmin() {
     }
   };
 
+  // 👉 NOVO: upload da foto
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !adminInfo) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result;
+      setAvatar(base64);
+      localStorage.setItem(`avatar_admin_${adminInfo._id}`, base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 👉 NOVO: remover foto
+  const handleRemoverAvatar = () => {
+    if (!adminInfo) return;
+    setAvatar('');
+    localStorage.removeItem(`avatar_admin_${adminInfo._id}`);
+  };
+
   return (
     <div className="h-screen w-screen bg-background">
       <nav className="bg-[#e6e6e6ff] shadow-md sticky top-0 z-50">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-4 mx-32">
-            <img src={uniforlogo} alt="Logo NAF" className="h-10 w-10 drop-shadow-lg"/>
+            <img src={uniforlogo} alt="Logo NAF" className="h-10 w-10 drop-shadow-lg" />
             <span className="[text-shadow:_0_2px_4px_rgb(168_168_168_/_0.3)] text-primary text-xl font-bold">NAF</span>
           </div>
           <div className="hidden md:flex items-center text-sm">
@@ -107,19 +138,54 @@ export default function TelaPerfilAdmin() {
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">
-            <BiArrowBack/> Voltar
+            <BiArrowBack /> Voltar
           </button>
           <button onClick={handleLogout} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow hover:scale-[1.01] transition">
-            <BiLogOut/> Sair
+            <BiLogOut /> Sair
           </button>
         </div>
 
         <section className="grid md:grid-cols-3 gap-6">
+          {/* CARD PERFIL ADMIN + FOTO */}
           <div className="md:col-span-1 bg-white rounded-2xl shadow p-6">
             <div className="flex flex-col items-center text-center">
-              <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
-                {form.nome?.[0]?.toUpperCase() || 'A'}
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="Foto do administrador"
+                  className="h-24 w-24 rounded-full object-cover ring-2 ring-primary/40"
+                />
+              ) : (
+                <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
+                  {form.nome?.[0]?.toUpperCase() || 'A'}
+                </div>
+              )}
+
+              {/* Botões de foto */}
+              <div className="mt-3 flex flex-col items-center gap-1 text-xs">
+                <label>
+                  <span className="px-3 py-1 rounded-xl bg-white shadow cursor-pointer hover:scale-[1.02] inline-block">
+                    Trocar foto
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                  />
+                </label>
+
+                {avatar && (
+                  <button
+                    type="button"
+                    onClick={handleRemoverAvatar}
+                    className="text-[11px] text-red-500 hover:underline mt-1"
+                  >
+                    Remover foto
+                  </button>
+                )}
               </div>
+
               <h2 className="mt-4 text-xl font-semibold text-[#0d2385]">{form.nome}</h2>
               <p className="text-sm text-gray-600">{form.cargo}</p>
             </div>
@@ -131,33 +197,54 @@ export default function TelaPerfilAdmin() {
             </div>
           </div>
 
+          {/* CONFIGURAÇÕES NAF */}
           <div className="md:col-span-2 bg-white rounded-2xl shadow p-6">
-            <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit/> Configurações do NAF</h3>
+            <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit /> Configurações do NAF</h3>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
-              <label className="flex flex-col text-sm"> Nome <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> E-mail <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Telefone <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Local <input className="mt-1 rounded-xl border p-2" name="local" value={form.local} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm md:col-span-2"> Horário de atendimento <input className="mt-1 rounded-xl border p-2" name="horario" value={form.horario} onChange={handleChange}/></label>
+              <label className="flex flex-col text-sm"> Nome
+                <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange} />
+              </label>
+              <label className="flex flex-col text-sm"> E-mail
+                <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange} />
+              </label>
+              <label className="flex flex-col text-sm"> Telefone
+                <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange} />
+              </label>
+              <label className="flex flex-col text-sm"> Local
+                <input className="mt-1 rounded-xl border p-2" name="local" value={form.local} onChange={handleChange} />
+              </label>
+              <label className="flex flex-col text-sm md:col-span-2"> Horário de atendimento
+                <input className="mt-1 rounded-xl border p-2" name="horario" value={form.horario} onChange={handleChange} />
+              </label>
             </div>
 
             <div className="mt-4 flex gap-3">
-              <button onClick={handleSalvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">Salvar Alterações</button>
+              <button onClick={handleSalvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">
+                Salvar Alterações
+              </button>
             </div>
 
             <div className="mt-6 grid md:grid-cols-3 gap-4">
-              <Link to="/telachat" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">Gerenciar FAQs do Chat</Link>
-              <a href="#" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">Agenda & Plantões</a>
-              <a href="#" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">Categorias de atendimento</a>
+              <Link to="/telachat" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">
+                Gerenciar FAQs do Chat
+              </Link>
+              <a href="#" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">
+                Agenda & Plantões
+              </a>
+              <a href="#" className="rounded-2xl p-4 bg-primary/10 hover:bg-primary/15 transition shadow text-[#0d2385] text-sm">
+                Categorias de atendimento
+              </a>
             </div>
           </div>
         </section>
 
         <section className="mt-6 grid md:grid-cols-3 gap-6">
-          {['Atendimentos Hoje','Tempo Médio','Satisfação'].map((t,i)=>(
+          {['Atendimentos Hoje', 'Tempo Médio', 'Satisfação'].map((t, i) => (
             <div key={i} className="bg-white rounded-2xl shadow p-6">
               <div className="text-sm text-gray-500">{t}</div>
-              <div className="mt-2 text-3xl font-bold text-[#0d2385]">{i===0?'23':i===1?'7 min':'4.8/5'}</div>
+              <div className="mt-2 text-3xl font-bold text-[#0d2385]">
+                {i === 0 ? '23' : i === 1 ? '7 min' : '4.8/5'}
+              </div>
             </div>
           ))}
         </section>
