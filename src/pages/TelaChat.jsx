@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BiSend, BiBookmark, BiTrash, BiHistory } from 'react-icons/bi';
+import { BiSend, BiHistory } from 'react-icons/bi';
 import uniforlogo from '../imagens/uniforlogo.png';
 
 const FAQ = [
@@ -29,7 +29,7 @@ function salvarOuAtualizarHistorico(session) {
   } else {
     all.unshift(session);
   }
-  
+
   localStorage.setItem('naf_chat_historico', JSON.stringify(all.slice(0, 100)));
 }
 
@@ -56,18 +56,18 @@ export default function TelaChat() {
       setSessionId(currentSessionId);
     }
     const titulo = mensagens.find(m => m.role === 'user')?.text?.slice(0, 60) || 'Conversa NAF';
-    const session = { 
-      id: currentSessionId, 
-      titulo, 
-      createdAt: new Date().toISOString(), 
+    const session = {
+      id: currentSessionId,
+      titulo,
+      createdAt: new Date().toISOString(),
       mensagens,
       usuarioNome: userInfo ? userInfo.nome : 'Usuário'
     };
     salvarOuAtualizarHistorico(session);
 
-  }, 
+  },
 
-  [mensagens, userInfo]);
+    [mensagens, userInfo]);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensagens]);
@@ -79,10 +79,6 @@ export default function TelaChat() {
     const resposta = { role: 'bot', text: respostaSimulada(pergunta), ts: Date.now() + 1 };
     setMensagens(prev => [...prev, nova, resposta]);
     setMsg('');
-  }
-  function limpar() {
-    setMensagens([]);
-    setSessionId(null);
   }
 
   return (
@@ -118,20 +114,34 @@ export default function TelaChat() {
           <div className="flex items-center justify-between p-3 border-b">
             <div className="font-semibold text-[#0d2385]">Assistente NAF</div>
             <div className="flex gap-2">
-              <button onClick={limpar} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white hover:bg-[#dcdcdc] text-sm shadow"><BiTrash /> Limpar</button>
+
               <Link to="/telahistorico" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/15 text-sm shadow"><BiHistory /> Histórico</Link>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {mensagens.length === 0 && (
-              <div className="text-sm text-gray-500">Digite sua dúvida abaixo ou escolha uma pergunta frequente.</div>
-            )}
-            {mensagens.map((m, idx) => (
-              <div key={idx} className={`max-w-[80%] rounded-2xl px-4 py-2 shadow ${m.role === 'user' ? 'bg-primary text-white self-end ml-auto' : 'bg-gray-100 text-gray-800'}`}>
-                {m.text}
+              <div className="text-sm text-gray-500">
+                Digite sua dúvida abaixo ou escolha uma pergunta frequente.
               </div>
-            ))}
+            )}
+            {mensagens.map((m, idx) => {
+              const isUser = m.role === 'user';
+              return (
+                <div
+                  key={idx}
+                  className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={[
+                      "inline-block max-w-[80%] rounded-2xl px-4 py-2 shadow", isUser
+                        ? "bg-primary text-white"            // Usuário (direita)
+                        : "bg-gray-100 text-gray-800"        // Bot (esquerda)
+                    ].join(" ")}
+                    style={{ wordBreak: 'break-word' }}>
+                    {m.text}</div>
+                </div>);
+            })}
+
             <div ref={endRef} />
           </div>
 

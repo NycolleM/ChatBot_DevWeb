@@ -120,7 +120,7 @@ const TelaLogin = () => {
           </button>
 
            <div className="text-[#5e5e5e] mt-4">
-          <Link to="/recuperar-senha" className="text-blue-600 hover:underline">
+          <Link to="/recuperar" className="text-blue-600 hover:underline">
             Esqueceu a senha?
           </Link>
           </div>

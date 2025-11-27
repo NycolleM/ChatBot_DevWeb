@@ -15,9 +15,12 @@ export default function TelaPerfil() {
     cnpj: '',
     telefone: '',
   });
+
   const [senha, setSenha] = useState({ atual: '', nova: '', confirmar: '' });
-  
   const [userInfo, setUserInfo] = useState(null);
+
+  // FOTO DE PERFIL
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     const info = localStorage.getItem('userInfo');
@@ -39,6 +42,13 @@ export default function TelaPerfil() {
           cnpj: data.cnpj || data.cpf || '',
           telefone: data.telefone || '',
         });
+
+        // Carrega avatar salvo (se existir)
+        const avatarKey = `avatar_${userData._id}`;
+        const savedAvatar = localStorage.getItem(avatarKey);
+        if (savedAvatar) {
+          setAvatar(savedAvatar);
+        }
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
       }
@@ -100,6 +110,27 @@ export default function TelaPerfil() {
     }
   };
 
+  // 👉 NOVO: handler para UPLOAD da foto
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !userInfo) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result;
+      setAvatar(base64);
+      localStorage.setItem(`avatar_${userInfo._id}`, base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 👉 NOVO: handler para REMOVER a foto
+  const handleRemoverAvatar = () => {
+    if (!userInfo) return;
+    setAvatar('');
+    localStorage.removeItem(`avatar_${userInfo._id}`);
+  };
+
   const docLimpo = (form.cnpj || '').replace(/[^\d]/g, '');
   const mask = docLimpo.length > 11 
     ? '99.999.999/9999-99'
@@ -131,27 +162,70 @@ export default function TelaPerfil() {
         </div>
 
         <section className="grid md:grid-cols-3 gap-6">
+          {/* CARD PERFIL + FOTO */}
           <div className="md:col-span-1 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <div className="flex flex-col items-center text-center">
-              <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
-                {form.nome?.[0]?.toUpperCase() || 'U'}
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="Foto de perfil"
+                  className="h-24 w-24 rounded-full object-cover ring-2 ring-primary/40"
+                />
+              ) : (
+                <div className="h-24 w-24 rounded-full bg-primary/10 grid place-items-center text-primary text-3xl font-bold">
+                  {form.nome?.[0]?.toUpperCase() || 'U'}
+                </div>
+              )}
+
+              {/* Botões de foto */}
+              <div className="mt-3 flex flex-col items-center gap-1 text-xs">
+                <label>
+                  <span className="px-3 py-1 rounded-xl bg-white shadow cursor-pointer hover:scale-[1.02] inline-block">
+                    Trocar foto
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                  />
+                </label>
+
+                {avatar && (
+                  <button
+                    type="button"
+                    onClick={handleRemoverAvatar}
+                    className="text-[11px] text-red-500 hover:underline mt-1"
+                  >
+                    Remover foto
+                  </button>
+                )}
               </div>
+
               <h2 className="mt-4 text-xl font-semibold text-[#0d2385]">{form.nome}</h2>
               <p className="text-sm text-gray-600">{form.bairro} • {form.cnpj}</p>
             </div>
+
             <div className="mt-6 space-y-3 text-sm">
               <div><span className="font-medium">E-mail: </span>{form.email}</div>
               <div><span className="font-medium">Telefone: </span>{form.telefone}</div>
             </div>
           </div>
 
+          {/* FORMULÁRIO DE EDIÇÃO */}
           <div className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit/> Editar informações</h3>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
-              <label className="flex flex-col text-sm"> Nome <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> E-mail <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Bairro <input className="mt-1 rounded-xl border p-2" name="bairro" value={form.bairro} onChange={handleChange}/></label>
-             <label className="flex flex-col text-sm"> CNPJ/CPF 
+              <label className="flex flex-col text-sm"> Nome 
+                <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/>
+              </label>
+              <label className="flex flex-col text-sm"> E-mail 
+                <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/>
+              </label>
+              <label className="flex flex-col text-sm"> Bairro 
+                <input className="mt-1 rounded-xl border p-2" name="bairro" value={form.bairro} onChange={handleChange}/>
+              </label>
+              <label className="flex flex-col text-sm"> CNPJ/CPF 
                 <InputMask 
                   className="mt-1 rounded-xl border p-2"
                   name="cnpj"
@@ -161,8 +235,11 @@ export default function TelaPerfil() {
                   maskChar={null}
                 />
               </label>
-              <label className="flex flex-col text-sm md:col-span-2"> Telefone <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/></label>
+              <label className="flex flex-col text-sm md:col-span-2"> Telefone 
+                <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/>
+              </label>
             </div>
+
             <div className="mt-4 flex gap-3">
               <button onClick={handleSalvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">Salvar</button>
               <Link to="/telahistorico" className="px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:bg-primary/15 transition">Ver histórico</Link>
@@ -171,11 +248,34 @@ export default function TelaPerfil() {
             <div className="mt-8">
               <h4 className="text-sm font-semibold text-[#0d2385]">Alterar senha</h4>
               <div className="grid md:grid-cols-3 gap-3 mt-2">
-                <input className="rounded-xl border p-2" type="password" placeholder="Senha atual" value={senha.atual} onChange={e=>setSenha(s=>({...s,atual:e.target.value}))}/>
-                <input className="rounded-xl border p-2" type="password" placeholder="Nova senha" value={senha.nova} onChange={e=>setSenha(s=>({...s,nova:e.target.value}))}/>
-                <input className="rounded-xl border p-2" type="password" placeholder="Confirmar nova senha" value={senha.confirmar} onChange={e=>setSenha(s=>({...s,confirmar:e.target.value}))}/>
+                <input 
+                  className="rounded-xl border p-2" 
+                  type="password" 
+                  placeholder="Senha atual" 
+                  value={senha.atual} 
+                  onChange={e=>setSenha(s=>({...s,atual:e.target.value}))}
+                />
+                <input 
+                  className="rounded-xl border p-2" 
+                  type="password" 
+                  placeholder="Nova senha" 
+                  value={senha.nova} 
+                  onChange={e=>setSenha(s=>({...s,nova:e.target.value}))}
+                />
+                <input 
+                  className="rounded-xl border p-2" 
+                  type="password" 
+                  placeholder="Confirmar nova senha" 
+                  value={senha.confirmar} 
+                  onChange={e=>setSenha(s=>({...s,confirmar:e.target.value}))}
+                />
               </div>
-              <button onClick={handleAtualizarSenha} className="mt-3 px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:scale-[1.01] transition">Atualizar senha</button>
+              <button 
+                onClick={handleAtualizarSenha} 
+                className="mt-3 px-4 py-2 rounded-xl bg-primary/10 text-[#0d2385] shadow hover:scale-[1.01] transition"
+              >
+                Atualizar senha
+              </button>
             </div>
           </div>
         </section>
