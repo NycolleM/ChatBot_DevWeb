@@ -12,6 +12,7 @@ export default function TelaPerfil() {
     nome: '',
     email: '',
     bairro: '',
+    rua: '',
     cnpj: '',
     telefone: '',
   });
@@ -39,6 +40,7 @@ export default function TelaPerfil() {
           nome: data.nome,
           email: data.email,
           bairro: data.bairro || '',
+          rua: data.rua || '',
           cnpj: data.cnpj || data.cpf || '',
           telefone: data.telefone || '',
         });
@@ -77,6 +79,7 @@ export default function TelaPerfil() {
         nome: data.nome,
         email: data.email,
         bairro: data.bairro || '',
+        rua: data.rua || '',
         cnpj: data.cnpj || data.cpf || '',
         telefone: data.telefone || '',
       });
@@ -222,7 +225,10 @@ export default function TelaPerfil() {
               <label className="flex flex-col text-sm"> E-mail 
                 <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/>
               </label>
-              <label className="flex flex-col text-sm"> Bairro 
+              <label className="flex flex-col text-sm"> Rua 
+                <input className="mt-1 rounded-xl border p-2" name="rua" value={form.rua} onChange={handleChange}/>
+              </label>
+               <label className="flex flex-col text-sm"> Bairro 
                 <input className="mt-1 rounded-xl border p-2" name="bairro" value={form.bairro} onChange={handleChange}/>
               </label>
               <label className="flex flex-col text-sm"> CNPJ/CPF 
@@ -235,7 +241,7 @@ export default function TelaPerfil() {
                   maskChar={null}
                 />
               </label>
-              <label className="flex flex-col text-sm md:col-span-2"> Telefone 
+              <label className="flex flex-col text-sm"> Telefone 
                 <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/>
               </label>
             </div>
