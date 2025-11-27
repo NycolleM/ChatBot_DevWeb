@@ -20,7 +20,8 @@ function App() {
       <Route path="/telahistorico" element={<TelaHistorico />} />
       <Route path="/telaloginadmin" element={<TelaLoginAdmin />} />
       <Route path="/telaperfiladmin" element={<TelaPerfilAdmin />} />
-      <Route path="/recuperar-senha" element={<TelaRecuperarSenha />} />
+      <Route path="/recuperar" element={<TelaRecuperarSenha />} />
+      <Route path="/recuperar/:token" element={<TelaRecuperarSenha />} />
     </Routes>
   )
 }
