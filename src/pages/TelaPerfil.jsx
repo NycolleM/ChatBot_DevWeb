@@ -10,14 +10,9 @@ export default function TelaPerfil() {
   const [form, setForm] = useState({
     nome: '',
     email: '',
-<<<<<<< Updated upstream
-    curso: '',
-    periodo: '',
-=======
     bairro: '',
     rua: '',
     cnpj: '',
->>>>>>> Stashed changes
     telefone: '',
   });
   const [senha, setSenha] = useState({ atual: '', nova: '', confirmar: '' });
@@ -40,14 +35,9 @@ export default function TelaPerfil() {
         setForm({
           nome: data.nome,
           email: data.email,
-<<<<<<< Updated upstream
-          curso: data.curso || '',
-          periodo: data.periodo || '',
-=======
           bairro: data.bairro || '',
           rua: data.rua || '',
           cnpj: data.cnpj || data.cpf || '',
->>>>>>> Stashed changes
           telefone: data.telefone || '',
         });
       } catch (error) {
@@ -75,10 +65,6 @@ export default function TelaPerfil() {
     try {
       const { data } = await axios.put(`http://localhost:3000/api/usuarios/${userInfo._id}`, form);
       
-<<<<<<< Updated upstream
-      setForm(data);
-      alert('Perfil atualizado com sucesso!');
-=======
       setForm({
         nome: data.nome,
         email: data.email,
@@ -87,7 +73,6 @@ export default function TelaPerfil() {
         cnpj: data.cnpj || data.cpf || '',
         telefone: data.telefone || '',
       });
->>>>>>> Stashed changes
     } catch (error) {
       const msg = error.response?.data?.msg || "Erro ao salvar perfil";
       console.error(msg);
@@ -164,13 +149,6 @@ export default function TelaPerfil() {
           <div className="md:col-span-2 bg-[#fcfcfc] rounded-2xl shadow p-6">
             <h3 className="text-lg font-semibold text-[#0d2385] flex items-center gap-2"><BiEdit/> Editar informações</h3>
             <div className="grid md:grid-cols-2 gap-4 mt-4">
-<<<<<<< Updated upstream
-              <label className="flex flex-col text-sm"> Nome <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> E-mail <input className="mt-1 rounded-xl border p-2" name="email" value={form.email} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Curso <input className="mt-1 rounded-xl border p-2" name="curso" value={form.curso} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm"> Período <input className="mt-1 rounded-xl border p-2" name="periodo" value={form.periodo} onChange={handleChange}/></label>
-              <label className="flex flex-col text-sm md:col-span-2"> Telefone <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/></label>
-=======
               <label className="flex flex-col text-sm"> Nome 
                 <input className="mt-1 rounded-xl border p-2" name="nome" value={form.nome} onChange={handleChange}/>
               </label>
@@ -196,7 +174,6 @@ export default function TelaPerfil() {
               <label className="flex flex-col text-sm"> Telefone 
                 <input className="mt-1 rounded-xl border p-2" name="telefone" value={form.telefone} onChange={handleChange}/>
               </label>
->>>>>>> Stashed changes
             </div>
             <div className="mt-4 flex gap-3">
               <button onClick={handleSalvar} className="px-4 py-2 rounded-xl bg-primary text-white shadow hover:opacity-90 transition">Salvar</button>
