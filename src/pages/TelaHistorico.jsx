@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BiSearch, BiTrash, BiChevronDown } from 'react-icons/bi';
 import uniforlogo from '../imagens/uniforlogo.png';
+// import  generatePDF  from  'react-to-pdf' ;
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+
 
 export default function TelaHistorico() {
   const [busca, setBusca] = useState('');
@@ -25,6 +28,7 @@ export default function TelaHistorico() {
 
   const handleToggle = (id) => {
     setOpenItemId(prevId => (prevId === id ? null : id));
+
   };
 
   return (
@@ -68,7 +72,7 @@ export default function TelaHistorico() {
                   </span>
                   <div className="flex items-center space-x-3 flex-shrink-0">
                     {s.usuarioNome && (
-                      <div className="text-xs text-gray-500 font-normal"> 
+                      <div className="text-xs text-gray-500 font-normal"> *
                         Pergunta feita por: {s.usuarioNome}
                       </div>
                     )}

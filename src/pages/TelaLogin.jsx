@@ -16,6 +16,8 @@ const TelaLogin = () => {
   const [usernameCadastro, setUsernameCadastro] = useState('');
   const [emailCadastro, setEmailCadastro] = useState('');
   const [senhaCadastro, setSenhaCadastro] = useState('');
+  const [ruaCadastro, setRuaCadastro] = useState('');
+  const [bairroCadastro, setBairroCadastro] = useState('');
   const [erroCadastro, setErroCadastro] = useState('');
  
   const handleLoginSubmit = async (e) => {
@@ -57,7 +59,9 @@ const TelaLogin = () => {
       const { data } = await axios.post('http://localhost:3000/api/usuarios', {
         nome: usernameCadastro,
         email: emailCadastro,
-        senha: senhaCadastro
+        senha: senhaCadastro,
+        rua: ruaCadastro,
+        bairro: bairroCadastro
       });
 
       console.log('Cadastro bem-sucedido:', data);
@@ -158,6 +162,27 @@ const TelaLogin = () => {
               onChange={(e) => setSenhaCadastro(e.target.value)}
             />
             <BiLock className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
+          </div>
+
+          
+          <div className="relative my-8">
+            <input 
+              type="text" 
+              placeholder="Rua" 
+              required
+              className="w-[160px] py-3 px-5 pr-[15px] bg-gray-100 rounded-lg border-none outline-none text-base text-gray-800 font-medium" 
+              value={ruaCadastro}
+              onChange={(e) => setRuaCadastro(e.target.value)}
+            />
+            <input 
+              type="text" 
+              placeholder="Bairro" 
+              required
+              className="w-[160px] py-3 px-5 ml-6 pr-[15px] bg-gray-100 rounded-lg border-none outline-none text-base text-gray-800 font-medium" 
+              value={bairroCadastro}
+              onChange={(e) => setBairroCadastro(e.target.value)}
+            />
+            {/* <BiEnvelope className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" /> */}
           </div>
 
           {erroCadastro && (
