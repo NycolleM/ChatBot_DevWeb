@@ -66,6 +66,8 @@ const TelaLogin = () => {
       setUsernameCadastro('');
       setEmailCadastro('');
       setSenhaCadastro('');
+      setRuaCadastro('');
+      setBairroCadastro('');
       setIsActive(false);
 
     } catch (error) {
