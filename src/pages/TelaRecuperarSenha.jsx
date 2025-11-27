@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { useNavigate,useParams, Link } from 'react-router-dom';
 import { BiEnvelope, BiLock, BiArrowBack } from 'react-icons/bi';
 import uniforlogo from '../imagens/uniforlogo.png';
-
+import axios from 'axios';
 export default function TelaRecuperarSenha() {
+  const { token } = useParams();
   const navigate = useNavigate();
   const [etapa, setEtapa] = useState(1);
   const [email, setEmail] = useState('');
@@ -11,26 +12,52 @@ export default function TelaRecuperarSenha() {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
 
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
-    console.log("Solicitação de recuperação para:", email);
-    setMensagem('Se o e-mail estiver correto, um link de recuperação foi enviado.');
-    setEtapa(2);
-  };
-
-  const handleNovaSenhaSubmit = (e) => {
-    e.preventDefault();
-    if (novaSenha !== confirmarSenha) {
-      setMensagem('As senhas não batem.');
-      return;
+useEffect(() => {
+    if (token) {
+      setEtapa(2); 
     }
-    if (novaSenha.length < 6) {
+  }, [token]);
+
+const handleEmailSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.post("http://localhost:3000/api/usuarios/recuperar", { email });
+    setMensagem(res.data.message);
+    console.log("Solicitação de recuperação para:", email);
+  } catch (err) {
+    setMensagem("Erro ao solicitar recuperação.");
+  }
+   
+};
+
+const handleNovaSenhaSubmit = async (e) => {
+  e.preventDefault();
+
+  if (novaSenha !== confirmarSenha) {
+    setMensagem("As senhas não batem.");
+    return;
+  }
+  if (novaSenha.length < 6) {
       setMensagem('A senha precisa ter no mínimo 6 caracteres.');
       return;
     }
     console.log("Nova senha definida para:", email);
-    navigate('/telalogin');
-  };
+  try {
+
+    const res = await axios.post("http://localhost:3000/api/usuarios/resetar", {
+      token,
+      novaSenha,
+    });
+
+    if (res.status === 200) {
+      navigate("/telalogin");
+    }
+
+  } catch (err) {
+    setMensagem(err.response?.data?.message || "Erro ao redefinir senha.");
+  }
+};
+ 
 
   return (
     <div className="h-screen w-screen bg-background flex items-center justify-center">
