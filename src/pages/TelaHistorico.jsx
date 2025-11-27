@@ -3,7 +3,66 @@ import { Link } from 'react-router-dom';
 import { BiSearch, BiTrash, BiChevronDown } from 'react-icons/bi';
 import uniforlogo from '../imagens/uniforlogo.png';
 // import  generatePDF  from  'react-to-pdf' ;
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 20,
+    fontSize: 12
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: 'bold'
+  },
+  section: {
+    marginBottom: 12
+  },
+  msgUser: {
+    backgroundColor: '#0d2385',
+    color: 'white',
+    padding: 6,
+    borderRadius: 6,
+    marginBottom: 4
+  },
+  msgBot: {
+    backgroundColor: '#eaeaea',
+    padding: 6,
+    borderRadius: 6,
+    marginBottom: 4
+  }
+});
+
+function HistoricoPDF({ item }) {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        
+        <Text style={styles.title}>{item.titulo}</Text>
+
+        <Text style={{ marginBottom: 8 }}>
+          Usuário: {item.usuarioNome || "Desconhecido"}
+        </Text>
+
+        <Text style={{ marginBottom: 8 }}>
+          Data: {new Date(item.createdAt).toLocaleString()}
+        </Text>
+
+        <View style={styles.section}>
+          {item.mensagens?.map((m, i) => (
+            <Text
+              key={i}
+              style={m.role === "user" ? styles.msgUser : styles.msgBot}
+            >
+              {m.role === "user" ? "Usuário: " : "Assistente: "}{m.text}
+            </Text>
+          ))}
+        </View>
+
+      </Page>
+    </Document>
+  );
+}
 
 
 export default function TelaHistorico() {
@@ -98,6 +157,16 @@ export default function TelaHistorico() {
                       ))}
                     </div>
                     <div className="text-xs text-gray-500 mt-2">Salvo em {new Date(s.createdAt).toLocaleString()}</div>
+
+                    <div className="mt-3">
+                    <PDFDownloadLink
+                        document={<HistoricoPDF item={s} />}
+                        fileName={`historico_${s.id}.pdf`}
+                        className="inline-block bg-primary text-white px-3 py-2 rounded-lg text-sm hover:bg-[#003bc7] transition shadow">
+                          {({ loading }) => loading ? "Gerando PDF..." : "Baixar PDF"}
+                        </PDFDownloadLink>
+                      </div>
+
                   </div>
                 )}
               </div>
