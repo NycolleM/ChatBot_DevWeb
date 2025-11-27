@@ -133,7 +133,7 @@ const TelaLogin = () => {
           <div className="relative my-8">
             <input 
               type="text" 
-              placeholder="Nome" 
+              placeholder="Nome Completo" 
               required
               className="w-full py-3 px-5 pr-[50px] bg-gray-100 rounded-lg border-none outline-none text-base text-gray-800 font-medium" 
               value={usernameCadastro}
