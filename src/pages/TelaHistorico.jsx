@@ -38,7 +38,7 @@ function HistoricoPDF({ item }) {
     <Document>
       <Page size="A4" style={styles.page}>
         
-        <Text style={styles.title}>{item.titulo}</Text>
+        {/* <Text style={styles.title}>{item.titulo}</Text> */}
 
         <Text style={{ marginBottom: 8 }}>
           Usuário: {item.usuarioNome || "Desconhecido"}
@@ -150,13 +150,13 @@ export default function TelaHistorico() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <h1 className="text-2xl font-bold text-[#0d2385]">Histórico do Chat</h1>
           <div className="flex gap-2">
-
+{/* 
               <PDFDownloadLink
                 document={<HistoricoPDFTudo itens={itens} />}
                 fileName="historico_completo.pdf"
                 className="bg-primary text-white px-4 py-2 rounded-xl shadow hover:bg-[#003bc7] transition">
                   {({ loading }) => loading ? "Gerando PDF..." : "Gerar PDF"}
-               </PDFDownloadLink>
+               </PDFDownloadLink> */}
            
 
             <div className="flex items-center gap-2 rounded-xl bg-white shadow px-3">
@@ -207,14 +207,14 @@ export default function TelaHistorico() {
                     </div>
                     <div className="text-xs text-gray-500 mt-2">Salvo em {new Date(s.createdAt).toLocaleString()}</div>
 
-                      {/* <div className="mt-3">
+                       <div className="mt-3">
                         <PDFDownloadLink
                         document={<HistoricoPDF item={s} />}
                         fileName={`historico_${s.id}.pdf`}
                         className="inline-block bg-primary text-white px-3 py-2 rounded-lg text-sm hover:bg-[#003bc7] transition shadow">
                           {({ loading }) => loading ? "Gerando PDF..." : "Baixar PDF"}
                         </PDFDownloadLink>
-                      </div> */}
+                      </div> 
 
                   </div>
                 )}
